@@ -1,25 +1,31 @@
-const exp = require("constants");
+let dotenv = require('dotenv').config()
 const express = require("express");
-const handlebars = require("express-handlebars");
-const path = require("path");
+const mongoose = require("mongoose")
 const router = require("./routes")
+const configHandlebar = require("./configs/configHandlebar")
+
 const app = express();
-
-app.engine(
-  "hbs",
-  handlebars.engine({
-    extname: "hbs",
-  })
-);
-
-app.set("view engine", "hbs");
-app.set("views", path.join(__dirname, "views"));
+configHandlebar(app)
 
 app.use(express.static("src/public"));
 
 app.use(router)
 
 
-app.listen(3000, () => {
-  console.log("Server is listnening on port 3000...");
+mongoose.connect(process.env.URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function() {
+  console.log("Connected to MongoDB successfully!");
+  app.listen(process.env.PORT, () => {
+    console.log("Server is listening on port 3000...");
+  });
+});
+
+
+
+
