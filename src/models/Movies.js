@@ -1,7 +1,7 @@
-import mongoose, { Schema, Model } from "mongoose";
+const mongoose = require("mongoose")
 
 
-const movieSchema = new Schema({
+const movieSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -44,7 +44,7 @@ const movieSchema = new Schema({
     ]
 });
 
-const Movie = Model('Movie', movieSchema)
+const Movie = mongoose.model('Movie', movieSchema)
 
 
 module.exports = Movie
