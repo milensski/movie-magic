@@ -1,16 +1,18 @@
 const router = require("express").Router();
 
+const movieService = require("../services/movieService")
+
 router.get("/create", (req, res) => {
   res.render("create");
 });
 
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
 
-  const body = req.body;
+  const movieData = req.body;
 
-  console.log(body);
+  await movieService.create(movieData)
 
-  res.redirect("create");
+  res.redirect("/");
 });
 
 module.exports = router;
